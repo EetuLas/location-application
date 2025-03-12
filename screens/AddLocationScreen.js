@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   ratingContainer: { flexDirection: "row", marginVertical: 10 },
   star: { fontSize: 30, color: "gray", marginRight: 5 },
   selectedStar: { color: "#FFD700" },
-  addButton: { backgroundColor: "purple", padding: 10, borderRadius: 10, marginTop: 20 },
+  addButton: { backgroundColor: "blue", padding: 10, borderRadius: 10, marginTop: 20 },
   addButtonText: { color: "white", textAlign: "center", fontWeight: "bold" },
 });
 

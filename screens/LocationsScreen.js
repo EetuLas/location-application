@@ -50,7 +50,7 @@ const LocationsScreen = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
-  addButton: { backgroundColor: "purple", padding: 10, borderRadius: 10, marginBottom: 10 },
+  addButton: { backgroundColor: "blue", padding: 10, borderRadius: 10, marginBottom: 10 },
   addButtonText: { color: "white", textAlign: "center", fontWeight: "bold" },
   locationCard: { backgroundColor: "#fff", padding: 15, borderRadius: 10, marginVertical: 5, elevation: 2 },
   locationTitle: { fontSize: 18, fontWeight: "bold" },
