@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { db } from "../firebaseConfig";
@@ -8,6 +8,7 @@ const AddLocationScreen = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [rating, setRating] = useState(0);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const addLocation = async () => {
@@ -16,6 +17,8 @@ const AddLocationScreen = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       await addDoc(collection(db, "locations"), {
         name,
@@ -23,10 +26,15 @@ const AddLocationScreen = () => {
         rating,
       });
       Alert.alert("Success", "Location added successfully!");
+      setName("");
+      setDescription("");
+      setRating(0);
       navigation.goBack();
     } catch (error) {
       console.error("Error adding location: ", error);
       Alert.alert("Error", "Could not add location.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,9 +65,13 @@ const AddLocationScreen = () => {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.addButton} onPress={addLocation}>
-        <Text style={styles.addButtonText}>Add new location</Text>
-      </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <TouchableOpacity style={styles.addButton} onPress={addLocation}>
+          <Text style={styles.addButtonText}>Add new location</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

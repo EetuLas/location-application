@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, onSnapshot } from "firebase/firestore"; // Use onSnapshot for real-time updates
 import { useNavigation } from "@react-navigation/native";
 import { db } from "../firebaseConfig";
 
@@ -9,20 +9,18 @@ const LocationsScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchLocations = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "locations"));
-        const locationsList = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setLocations(locationsList);
-      } catch (error) {
-        console.error("Error fetching locations: ", error);
-      }
-    };
-    fetchLocations();
-  }, []);
+    // Fetch locations in real-time using onSnapshot
+    const unsubscribe = onSnapshot(collection(db, "locations"), (querySnapshot) => {
+      const locationsList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setLocations(locationsList);
+    });
+
+    // Cleanup the subscription when the component is unmounted
+    return () => unsubscribe();
+  }, []); // Empty dependency array means it runs once when the component mounts
 
   return (
     <View style={styles.container}>
